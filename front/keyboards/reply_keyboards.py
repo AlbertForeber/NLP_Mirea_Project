@@ -14,7 +14,7 @@ def command_keyboard():
     builder.row(
 
         KeyboardButton(text="/create_note"),
-        #KeyboardButton(text="/delete_note")
+        KeyboardButton(text="/delete_note")
     )
     builder.row(
         KeyboardButton(text="/categories")

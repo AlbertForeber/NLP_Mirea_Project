@@ -89,7 +89,7 @@ async def command_delete_note_id_stage_handler(message: Message, db: AsyncPostgr
         note_id = int(note_id)
         note_ = all_notes[note_id].get("note_id")
         try:
-            reuslt_agent = await agent_controller.delete_note(message.from_user.id, note_id)
+            reuslt_agent = await agent_controller.delete_note(message.from_user.id, note_)
             print("Результат удаления с агента ", reuslt_agent)
             await message.answer("Удаление выполнено успешно")
         except Exception as e:
