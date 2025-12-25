@@ -1,0 +1,4 @@
+aiogram==3.22.0
+pydantic==2.11.10
+asyncpg==0.31.0
+tenacity==9.1.2

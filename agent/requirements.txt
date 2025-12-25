@@ -1,0 +1,20 @@
+# Основные фреймворки
+numpy==2.3.4
+fastapi==0.119.0
+uvicorn==0.37.0
+pydantic==2.11.7
+python-dotenv==1.2.1
+
+# База данных
+asyncpg==0.31.0
+
+# Векторные базы и эмбеддинги
+faiss-cpu==1.13.0
+langchain-community==0.4.1
+langchain-ollama==1.0.0
+langchain-openai==1.1.0
+langchain-core==1.1.0
+
+# Блокировки и утилиты
+aiorwlock==1.5.0
+websockets==15.0.1

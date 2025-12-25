@@ -1,0 +1,65 @@
+services:
+  agent:
+    build: ./agent
+    container_name: "agent"
+    ports:
+      - 8000:8000
+    environment:
+      - BASE_URL=http://77.83.85.58:11435
+      - DB_DSN=postgres://telegram_user:123456@postgres_database:5432/mydatabase
+    depends_on:
+      db:
+        condition: "service_healthy"
+    volumes:
+      - faiss_data:/app/data/
+
+
+  db:
+    image: postgres
+    container_name: postgres_database
+    restart: always
+    environment:
+    # Создает пользователя при первом запуске
+      - POSTGRES_USER=telegram_user
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=mydatabase
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U telegram_user -d mydatabase"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "5423:5423"
+    volumes:
+      # Стартовые скрипты
+      - ./init_scripts:/docker-entrypoint-initdb.d
+      # Привязка тома для хранения данных
+      - postgres_data:/var/lib/postgresql/postgres_data
+
+  bot:
+    build: ./front
+    container_name: bot
+    environment:
+      BOT_TOKEN: 8119060681:AAFt0-AiNxUVihxhaSrBOBGU_ijST4nTSkY
+      dns: postgres://telegram_user:123456@postgres_database:5432/mydatabase
+    ports:
+          - 8080:8080
+    depends_on:
+      db:
+        condition: service_healthy
+
+  tts:
+      build: ./tts
+      container_name: tts
+
+  stt:
+    build: ./stt
+    container_name: stt
+
+    volumes:
+      - ./stt/whisper_model:/root/.cache/whisper/
+
+volumes:
+  postgres_data:
+  faiss_data:
